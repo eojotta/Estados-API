@@ -58,7 +58,7 @@ app.get('/v1/senai/dados/estado/:uf', function (request, response) {
     }
 })
 
-//Retorna dados da capital filtrando pela sigla  do estado
+    //Retorna dados da capital filtrando pela sigla  do estado
 app.get('/v1/senai/capital/estado/:uf', function (request, response) {
     let sigla = request.params.uf
     let capital = estadosCidades.getCapitalEstado(sigla)
@@ -104,30 +104,36 @@ app.get('/v1/senai/cidades/estado/:uf', function (request, response) {
     }
 })
 
-app.get('/v1/senai/help', function(request, response){
+app.get('/v1/senai/help', function (request, response) {
     let docAPI = {
-        "api-description":"API para manipular dados de Estados e Cidades",
-        "data":"2026-04-02",
-        "development":"Enzzo Fernandes da Chagas",
+        "api-description": "API para manipular dados de Estados e Cidades",
+        "data": "2026-04-02",
+        "development": "João Pedro dos Santos",
         "version": 1.0,
-        "endpoints":[
-            {   "rota1":"/v1/senai/estados",
-                "description":"Retorna a lista de todos os estados"
+        "endpoints": [
+            {
+                "rota1": "/v1/senai/estados",
+                "description": "Retorna a lista de todos os estados"
             },
-            {   "rota2":"/v1/senai/dados/estado/sp",
-                "description":"Retorna dados de um estado filtrando pela sigla"
+            {
+                "rota2": "/v1/senai/dados/estado/sp",
+                "description": "Retorna dados de um estado filtrando pela sigla"
             },
-            {   "rota3":"/v1/senai/capital/estado/sp",
-                "description":"Retorna dados da capital de um estado filtrando pela sigla"
+            {
+                "rota3": "/v1/senai/capital/estado/sp",
+                "description": "Retorna dados da capital de um estado filtrando pela sigla"
             },
-            {   "rota4":"/v1/senai/estados/regiao/sul",
-                "description":"Retorna os estados filtrando pela região"
+            {
+                "rota4": "/v1/senai/estados/regiao/sul",
+                "description": "Retorna os estados filtrando pela região"
             },
-            {   "rota5":"/v1/senai/estados/capital/brasil",
-                "description":"Retorna os estados que foram capitais do Brasil"
+            {
+                "rota5": "/v1/senai/estados/capital/brasil",
+                "description": "Retorna os estados que foram capitais do Brasil"
             },
-            {   "rota6":"/v1/senai/cidades/estado/rj",
-                "description":"Retorna as cidades filtrando pela sigla do estado"
+            {
+                "rota6": "/v1/senai/cidades/estado/rj",
+                "description": "Retorna as cidades filtrando pela sigla do estado"
             }
         ]
     }
