@@ -1,9 +1,9 @@
 
 /*****************************************************************************************
  * Objetivo: Arquivo responsável pela criação da API do projeto de Estados e Cidades
- * Data: 01/04/2026
- *  Autor: Enzzo
- * Versão: 1.0
+ * Data: 2026-04-01
+ *  Autor: João Pedro dos Santos
+ * Versão: 1.1
  ****************************************************************************************/
 
 /****

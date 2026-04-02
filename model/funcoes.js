@@ -1,4 +1,9 @@
-
+/*********************************************
+*  Arquivo responsável pelas funções
+*  Data: 2026-04-02
+*  Autor: João Pedro
+*  Versão: 1.1
+ ********************************************/
 const { listaDeEstados } = require("./arquivo");
 
 function getListaDeEstados() {

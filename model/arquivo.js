@@ -1,8 +1,8 @@
 
 /* *********************************************************************
 * Objetivo: Obter uma lista de estados
-* Data: 29/08/2022  
-* Autor: Marcel
+* Data: 2022-08-29  
+* Autor: João Pedro dos Santos
 * **********************************************************************/
 
 //Simulando o resultado de uma API 
