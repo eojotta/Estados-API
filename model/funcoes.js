@@ -1,136 +1,132 @@
+
 const { listaDeEstados } = require("./arquivo");
 
-function getListaDeEstados(){
-
-    let siglasUf = []
-    listaDeEstados.estados.forEach(function(sigla){
-
-        siglasUf.push(sigla.sigla)
-
+function getListaDeEstados() {
+    
+    let ufs = []
+    
+    listaDeEstados.estados.forEach(function (itemEstado) {
+        ufs.push(itemEstado.sigla)
+        
+        
     })
-    return { 'uf': siglasUf, 'quantidade': siglasUf.length }
+    
+    let listaUfs = {'uf': ufs, 'quantidade':ufs.length}
 
-
+    return listaUfs
+    
 }
 
-function getDadosEstados(sigla){
-    let dadosUf = false
-    listaDeEstados.estados.forEach(function(dados){
+function getDadosEstado(sigla){
+    let estado = false
 
-        if(String(dados.sigla).toLowerCase() == String(sigla).toLowerCase()){
-            dadosUf = {'uf': dados.sigla, 'descricao': dados.nome, 'capital': dados.capital, 'regiao': dados.regiao}
-
+    listaDeEstados.estados.forEach(function(itemEstado){
+        if (itemEstado.sigla.toUpperCase() === sigla.toUpperCase()){
+            
+            estado = {'uf': itemEstado.sigla, 'descricao' : itemEstado.nome, 'capital': itemEstado.capital, 'regiao': itemEstado.regiao }
+            
         }
+
     })
-    return dadosUf
+    return estado
+
 }
 
 function getCapitalEstado(sigla){
-    let capitalUf = false
+    let estado = false
 
-    listaDeEstados.estados.forEach(function(capital){
-        if (String(capital.sigla).toLowerCase() == String(sigla).toLowerCase()){
-            capitalUf = { 'uf': capital.sigla, 'descricao': capital.nome, 'capital': capital.capital }
-
+    listaDeEstados.estados.forEach(function(itemEstado){
+        if(itemEstado.sigla.toUpperCase() === sigla.toUpperCase() ){
+            estado = {'uf':itemEstado.sigla, 'descricao': itemEstado.nome , 'capital':itemEstado.capital}
         }
     })
-    return capitalUf
+
+    return estado
+
 }
 
 function getEstadosRegiao(regiao){
-    let regiaoUf = []
-    let estadoUf = {}
+    let estados = []
+    let resultado = false
 
-    listaDeEstados.estados.forEach(function(estado){
-
-        if(String(estado.regiao).toLowerCase() == String(regiao).toLowerCase()){
-                regiaoUf.push({'uf': estado.sigla, 'descricao': estado.nome })
+    listaDeEstados.estados.forEach(function(itemEstado){
+        if (itemEstado.regiao.toUpperCase() === regiao.toUpperCase()){
+            estados.push({'uf' : itemEstado.sigla, 'descricao' : itemEstado.nome})
+            
         }
-
     })
-    estadoUf = {'regiao': regiao, 'estados': regiaoUf }
 
-    return estadoUf
-}
-
-function getCapitalPais(){
-        let capitalPais = []
-        let listaCapitais = {}
-
-        listaDeEstados.estados.forEach(function(capital){
-
-         if(String(capital.capital_pais).toLowerCase() != String(null).toLowerCase()){
-              capitalPais.push({capital_atual : capital.capital_pais.capital,
-        'uf' : capital.sigla,
-        'descricao': capital.nome,
-        'capital': capital.capital,
-        'regiao': capital.regiao,
-        'capital_pais_ano_inicio' : capital.capital_pais.ano_inicio,
-        'capital_pais_ano_fim': capital.capital_pais.ano_fim
-
-                })
-               
-            }
-
-        })
-        return listacAPITAIS = {'capitais': capitalPais}
-}
-    function getCidades(sigla){
-        let cidadesUF = false
-
-        
-
-        listaDeEstados.estados.forEach(function(linha){
-
-
-            if(sigla === linha.sigla){
-
-                let cidadesNome = []
-
-
-                linha.cidades.forEach(function(cidade){
-
-                        cidadesNome.push(cidade.nome)
-                })
-
-                cidadesUF = {'uf' : linha.sigla,
-                      'descricao' : linha.nome,
-             'quantidade_cidades' : cidadesNome.length,
-                        'cidades' : cidadesNome
-                }
-            }
-
-
-        })
-        
-        return cidadesUF
+    if(estados.length>0){
+        resultado = {'regiao': regiao.toUpperCase(),'estados': estados}
+        return resultado
     }
 
+    return resultado
+    
+
+}
 
 
-console.log(getListaDeEstados(''))
-console.log('')
-console.log('***********************')
-console.log(getDadosEstados('SP'))
-console.log('')
-console.log('***********************')
-console.log(getCapitalEstado('SP'))
-console.log('')
-console.log('***********************')
-console.log(getEstadosRegiao('Sul'))
-console.log('')
-console.log('***********************')
-console.log(getCapitalPais(''))
-console.log('')
-console.log('**********************')
-console.log(getCidades('AC'))
-console.log('')
-console.log('**********************')
+
+function getCapitalPais(){
+    let listaCapitais = {}
+    let capitais = []
+    listaDeEstados.estados.forEach(function(itemEstado){
+
+        if(itemEstado.capital_pais != null){
+            capitais.push({ capital_atual : itemEstado.capital_pais.capital,
+                            uf : itemEstado.sigla,
+                            descricao : itemEstado.nome,
+                            capital : itemEstado.capital,
+                            regiao : itemEstado.regiao,
+                            capital_pais_ano_inicio : itemEstado.capital_pais.ano_inicio,
+                            capital_pais_ano_final : itemEstado.capital_pais.ano_fim })
+        }
+    })
+    listaCapitais = {capitais : capitais}
+    return listaCapitais
+}
+
+function getCidades(sigla){
+    
+    let solicitarDados = false
+    listaDeEstados.estados.forEach(function(itemEstado){
+        if(itemEstado.sigla.toUpperCase() === sigla.toUpperCase()){
+            
+            const nomeCidades = []
+            itemEstado.cidades.forEach(function(cidade){
+                nomeCidades.push(cidade.nome)
+            })
+
+            solicitarDados = {uf : itemEstado.sigla, descricao : itemEstado.nome, quantidade_cidades : nomeCidades.length, cidades : nomeCidades}
+            
+
+        }        
+        
+
+    })
+    return solicitarDados
+    
+
+}
 
 module.exports = {
     getListaDeEstados,
-    getDadosEstados,
+    getDadosEstado,
     getCapitalEstado,
     getEstadosRegiao,
     getCapitalPais,
+    getCidades
 }
+
+//console.log(getListaDeEstados())
+
+//console.log(getDadosEstado('PR'))
+
+//console.log(getCapitalEstado('aC'))
+
+//console.log(getEstadosRegiao('NortE'))
+
+//console.log(getCapitalPais())
+
+//console.log(getCidades('RJ'))

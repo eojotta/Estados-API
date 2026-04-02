@@ -1,34 +1,36 @@
-/***********************************************************************************
-*Objetivo: Arquivo responsável pela criação da API do projeto de Estados e Cidades
-*Data: 01/04/2026
-*Autor: João Pedro
-*Versão: 1.0
-************************************************************************************/
 
-/**
+/*****************************************************************************************
+ * Objetivo: Arquivo responsável pela criação da API do projeto de Estados e Cidades
+ * Data: 01/04/2026
+ *  Autor: Enzzo
+ * Versão: 1.0
+ ****************************************************************************************/
+
+/****
  * Para configurar a API:
- *  Instalar o EXPRESS -> npm install express --save (dependencia para configurar e utilizar o protocolo HTTP para criar a API)
- *  Instalar o CORS    -> npm install cors --save (permissões que a api precisa ter para ter acesso ao front / se não o front não consegue ter permissão)
+ * Instalar o EXPRESS  -> npm install express --save
+ *     Dependencia para configurar e utilizar o protocolo HTTP para criar a API
+ * 
+ * Instalar o CORS     -> npm install cors --save
+ *     Dependencia para configurar as permissões de acesso da API
  */
 
 
-
-//import das dependencias para criar a API
+//Import das dependencias para criar a API
 const express = require('express')
-const cors    = require('cors')
-const { METHODS } = require('node:http')
+const cors = require('cors')
 
-
-//criando um objeto do express para criar a API
+//Criando um objeto do express para criar a API
 const app = express()
 
-//Configurações do CORS da API
+//Configuração do CORS da API
 const corsOptions = {
-    origin: ['*'],  //Configuração de origem da Requisição (IP ou Domínio)
-    methods: 'GET', //Configuração dos verbos que serão utilizados na API
-    allowedHeaders: ['Content-type', 'Authorization'] // Configuração de permissões
-                    //Tipo de dados   //Autorização de acesso
-}  
+    origin: ['*'],   //Configuração da origem da requisição (IP ou Dominio)
+    methods: 'GET',  //Configuração dos verbos que serão ultilizados na API
+    allowedHeaders: ['Content-type', 'Authorization'] //Configurações de permissões
+    //Tipo de dados   //Autorização de acesso
+
+}
 
 //Aplica as configurações do CORS no app (EXPRESS)
 app.use(cors(corsOptions))
@@ -36,79 +38,104 @@ app.use(cors(corsOptions))
 //Import do arquivo de funções
 const estadosCidades = require('./model/funcoes.js')
 
-//Endpoint para listar os Estados
-app.get('/v1/senai/estados',function(request, response){
-
-   let estados = estadosCidades.getListaDeEstados()
+//Retorna uma lista de estados
+app.get('/v1/senai/estados', function (request, response) {
+    let estados = estadosCidades.getListaDeEstados()
+    response.status(200) //Requisição bem sucedida!!!
     response.json(estados)
-    response.status(200) //Requisição bem sucedida!!
 })
 
-
-
-//Endpoint para dados estados/sigla
-app.get('/v1/senai/dados/estados/:uf', function(request,response){
+//Retorna dados de um estado filtrando pela sigla do estado
+app.get('/v1/senai/dados/estado/:uf', function (request, response) {
     let sigla = request.params.uf
-    let estado = estadosCidades.getDadosEstados(sigla)
-    if(estado){
-        response.json(estado)
+    let estado = estadosCidades.getDadosEstado(sigla)
+    if (estado) {
         response.status(200)
-    }else{
-        response.json({'message': 'Nenhum estado foi encontrado'})
+        response.json(estado)
+    } else {
         response.status(404)
+        response.json({ "message": "Nenhum estado foi encontrado" })
     }
-   
 })
 
-//Endpoint para capital estado/sigla
-app.get('/v1/senai/capital/estados/:uf', function(request,response){
+//Retorna dados da capital filtrando pela sigla  do estado
+app.get('/v1/senai/capital/estado/:uf', function (request, response) {
     let sigla = request.params.uf
-    let estado = estadosCidades.getCapitalEstado(sigla)
-    if(estado){
-        response.json(estado)
+    let capital = estadosCidades.getCapitalEstado(sigla)
+    if (capital) {
         response.status(200)
-    }else{
-        response.json({'message': 'Nenhuma capital foi encontrada'})
+        response.json(capital)
+    } else {
         response.status(404)
+        response.json({ "message": "Nenhum estado foi encontrado" })
     }
-   
 })
 
-//Endpoint para região estado/sigla
-app.get('/v1/senai/regiao/estados/:uf', function(request,response){
-    let sigla = request.params.uf
-    let estado = estadosCidades.getEstadosRegiao(sigla)
-    if(estado){
-        response.json(estado)
+//Retorna os estados filtrando pela região
+app.get('/v1/senai/estados/regiao/:regiao', function (request, response) {
+    let regiao = request.params.regiao
+    let estadoRegioes = estadosCidades.getEstadosRegiao(regiao)
+    if (estadoRegioes) {
         response.status(200)
-    }else{
-        response.json({'message': 'Nenhuma regiao foi encontrada'})
+        response.json(estadoRegioes)
+    } else {
         response.status(404)
+        response.json({ "message": "Nenhum estado foi encontrado" })
     }
-   
 })
 
-//Endpoint para capital estado/sigla
-app.get('/v1/senai/capital/estados/:uf', function(request,response){
-    let sigla = request.params.uf
-    let estado = estadosCidades.getCapitalPais(sigla)
-    if(estado){
-        response.json(estado)
-        response.status(200)
-    }else{
-        response.json({'message': 'Nenhuma regiao foi encontrada'})
-        response.status(404)
-    }
-   
-})
-
-
-app.get('/cidades', function(request, response){
-    response.json({'message': 'Testando a API de cidades'})
+//Retorna os estados que foram capital do Brasil
+app.get('/v1/senai/estados/capital/brasil', function (request, response) {
+    let capitais = estadosCidades.getCapitalPais()
+    response.json(capitais)
     response.status(200)
 })
 
+//Retorna as cidades filtrando pela sigla do estado
+app.get('/v1/senai/cidades/estado/:uf', function (request, response) {
+    let sigla = request.params.uf
+    let cidadesEstado = estadosCidades.getCidades(sigla)
+    if (cidadesEstado) {
+        response.status(200)
+        response.json(cidadesEstado)
+    } else {
+        response.status(404)
+        response.json({ "message": "Nenhum estado foi encontrado" })
+    }
+})
+
+app.get('/v1/senai/help', function(request, response){
+    let docAPI = {
+        "api-description":"API para manipular dados de Estados e Cidades",
+        "data":"2026-04-02",
+        "development":"Enzzo Fernandes da Chagas",
+        "version": 1.0,
+        "endpoints":[
+            {   "rota1":"/v1/senai/estados",
+                "description":"Retorna a lista de todos os estados"
+            },
+            {   "rota2":"/v1/senai/dados/estado/sp",
+                "description":"Retorna dados de um estado filtrando pela sigla"
+            },
+            {   "rota3":"/v1/senai/capital/estado/sp",
+                "description":"Retorna dados da capital de um estado filtrando pela sigla"
+            },
+            {   "rota4":"/v1/senai/estados/regiao/sul",
+                "description":"Retorna os estados filtrando pela região"
+            },
+            {   "rota5":"/v1/senai/estados/capital/brasil",
+                "description":"Retorna os estados que foram capitais do Brasil"
+            },
+            {   "rota6":"/v1/senai/cidades/estado/rj",
+                "description":"Retorna as cidades filtrando pela sigla do estado"
+            }
+        ]
+    }
+    response.status(200)
+    response.json(docAPI)
+})
+
 //Fazer o Start na API (aguardando as requisições)
-app.listen(8080, function(){
-    console.log('API aguardando novas requisições...')
+app.listen(8080, function () {
+    console.log('API aguardando novas requisições ...')
 })
